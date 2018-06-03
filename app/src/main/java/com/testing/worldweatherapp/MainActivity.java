@@ -13,6 +13,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.testing.worldweatherapp.Singleton.getSingleton;
+
 public class MainActivity extends AppCompatActivity {
 
     public static String lmn;
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     TextView indianaMax;
     TextView indianaMin;
 
+    Singleton main;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         delhiMin = findViewById(R.id.delhiMinTemp);
         indianaMax = findViewById(R.id.indianaMaxTemp);
         indianaMin = findViewById(R.id.indianaMinTemp);
+
+        main = new Singleton();
 
 
         final Handler handler = new Handler();
@@ -200,16 +206,15 @@ public class MainActivity extends AppCompatActivity {
     public class WeatherAPI extends AsyncTask<Void, Void, Void> {
 
 
-
-
         @Override
         protected Void doInBackground(Void... voids) {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(API.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
-                    .build();
+//            Retrofit retrofit = new Retrofit.Builder()
+//                    .baseUrl(API.BASE_URL)
+//                    .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
+//                    .build();
 
-            API api = retrofit.create(API.class);
+
+            API api = Singleton.getSingleton().getRetrofit().create(API.class);
 
             Call<WeatherData> weatherDataCall1 = api.getWeather("London", "c3f5d6c81b96c66c2dbd55ce7c2ba415");
 
@@ -223,6 +228,8 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.lmx = String.valueOf(weatherData.getMain().getTemp_max());
 
 
+//                    londonMax.setText(String.valueOf(weatherData.getMain().getTemp_max()));
+//                    londonMin.setText(String.valueOf(weatherData.getMain().getTemp_min()));
 
 
                 } else {
@@ -243,12 +250,14 @@ public class MainActivity extends AppCompatActivity {
                 if (w.isSuccessful()) {
                     WeatherData weatherData = w.body();
 
-                    MainActivity.dmn = String .valueOf(weatherData.getMain().getTemp_min());
-                    MainActivity.dmx = String .valueOf(weatherData.getMain().getTemp_max());
+                    MainActivity.dmn = String.valueOf(weatherData.getMain().getTemp_min());
+                    MainActivity.dmx = String.valueOf(weatherData.getMain().getTemp_max());
+
+//                    delhiMax.setText(String.valueOf(weatherData.getMain().getTemp_max()));
+//                    delhiMin.setText(String.valueOf(weatherData.getMain().getTemp_min()));
 
 
-                }
-                else {
+                } else {
                     System.out.println("error with response");
                 }
 
@@ -266,12 +275,14 @@ public class MainActivity extends AppCompatActivity {
                     WeatherData weatherData = w.body();
                     System.out.println("IND " + weatherData.getMain().getTemp_max());
 
-                    MainActivity.imn = String .valueOf(weatherData.getMain().getTemp_min());
-                    MainActivity.imx = String .valueOf(weatherData.getMain().getTemp_max());
+                    MainActivity.imn = String.valueOf(weatherData.getMain().getTemp_min());
+                    MainActivity.imx = String.valueOf(weatherData.getMain().getTemp_max());
+
+//                    indianaMax.setText(String.valueOf(weatherData.getMain().getTemp_max()));
+//                    indianaMin.setText(String.valueOf(weatherData.getMain().getTemp_min()));
 
 
-                }
-                else {
+                } else {
                     System.out.println("error with response");
                 }
 
