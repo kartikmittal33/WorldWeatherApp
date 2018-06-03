@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     TextView indianaMax;
     TextView indianaMin;
 
-    Singleton main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         indianaMax = findViewById(R.id.indianaMaxTemp);
         indianaMin = findViewById(R.id.indianaMinTemp);
 
-        main = new Singleton();
 
 
         final Handler handler = new Handler();
@@ -273,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 Response<WeatherData> w = weatherDataCall3.execute();
                 if (w.isSuccessful()) {
                     WeatherData weatherData = w.body();
-                    System.out.println("IND " + weatherData.getMain().getTemp_max());
+//                    System.out.println("IND " + weatherData.getMain().getTemp_max());
 
                     MainActivity.imn = String.valueOf(weatherData.getMain().getTemp_min());
                     MainActivity.imx = String.valueOf(weatherData.getMain().getTemp_max());
